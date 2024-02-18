@@ -1,71 +1,198 @@
-! function(t) {
-		"use strict";
+var closeFn;
+function closeShowingModal() {
+  var showingModal = document.querySelector(".modal.show");
+  if (!showingModal) return;
+  showingModal.classList.remove("show");
+  document.body.classList.remove("disable-mouse");
+  document.body.classList.remove("disable-scroll");
+  if (closeFn) {
+    closeFn();
+    closeFn = null;
+  }
+}
+document.addEventListener("click", function (e) {
+  var target = e.target;
+  if (target.dataset.ctaTarget) {
+    closeFn = cta(
+      target,
+      document.querySelector(target.dataset.ctaTarget),
+      { relativeToWindow: true },
+      function showModal(modal) {
+        modal.classList.add("show");
+        document.body.classList.add("disable-mouse");
+        if (target.dataset.disableScroll) {
+          document.body.classList.add("disable-scroll");
+        }
+      }
+    );
+  } else if (target.classList.contains("modal-close-btn")) {
+    closeShowingModal();
+  }
+});
+document.addEventListener("keyup", function (e) {
+  if (e.which === 27) {
+    closeShowingModal();
+  }
+});
+!(function () {
+  function a(a) {
+    for (
+      var b,
+        c = 0,
+        d = "string" == typeof a ? a.split(/\s*,\s*/) : [],
+        e = d.length;
+      e--;
 
-		function e(t, e, i, n, r) {
-				var o = Array.prototype.forEach,
-						f = t instanceof Node ? t : document.querySelector(t);
-				if (!f) return !1;
-				var s = f.querySelectorAll(e);
-				if (0 === s.length) return !1;
-				i = "number" == typeof i && isFinite(i) && Math.floor(i) === i ? i : 6, f.style.width = "";
-				var u = f.getBoundingClientRect().width,
-						d = s[0].getBoundingClientRect().width + i,
-						l = Math.max(Math.floor((u - i) / d), 1),
-						a = 0;
-				u = d * l + i + "px", f.style.width = u, f.style.position = "relative";
-				for (var c = [], m = [], p = 0; l > p; p++) m.push(p * d + i), c.push(i);
-				o.call(s, function(t) {
-						var e = c.slice(0).sort(function(t, e) {
-								return t - e
-						}).shift();
-						e = c.indexOf(e);
-						var r = m[e],
-								f = c[e],
-								s = ["webkitTransform", "MozTransform", "msTransform", "OTransform", "transform"];
-						return t.style.position = "absolute", n || o.call(s, function(e) {
-								t.style[e] = "translate3D(" + r + "px," + f + "px,0)"
-						}), c[e] += t.getBoundingClientRect().height + i, a += 1, n ? n(t, r, f, a) : void 0
-				});
-				var h = c.slice(0).sort(function(t, e) {
-						return t - e
-				}).pop();
-				f.style.height = h + "px", "function" == typeof r && r(s)
-		}
-		"function" == typeof define && define.amd ? define(function() {
-				return e
-		}) : "undefined" != typeof module && module.exports ? module.exports = e : t.minigrid = e
-}(this),
-function() {
-		minigrid(".grid", ".grid-item"), window.addEventListener("resize", function() {
-				minigrid(".grid", ".grid-item")
-		})
-}();
-
-var PostToCodepen = function() {
-		var e, t, n, r, o, a, u = document.getElementsByClassName("codepen-group"),
-				d = function(e) {
-						var t = document.createElement("form"),
-								n = document.createElement("input"),
-								i = document.createElement("button"),
-								r = document.createDocumentFragment();
-						t.setAttribute("action", "https://codepen.io/pen/define"), t.setAttribute("method", "POST"), t.setAttribute("target", "_blank"), n.setAttribute("type", "hidden"), n.setAttribute("name", "data"), n.setAttribute("value", a), t.appendChild(n), i.setAttribute("class", "codepen"), t.appendChild(i), r.appendChild(t), e.appendChild(r)
-				},
-				s = function(e) {
-						var t = JSON.stringify(e);
-						return t = t.replace(/"/g, "&quot;"), t = t.replace(/'/g, "&apos;")
-				},
-				l = function() {
-						for (i = 0, len = u.length; i < len; i++) {
-								var l = {
-										html: ""
-								};
-								e = u[i].getElementsByClassName("codepen-able");
-								for (var c = 0, f = e.length; f > c; c++) t = e[c], n = t.getAttribute("data-type"), r = t.firstChild, o = r.innerHTML, o.length > 0 && (l[n] = o);
-								a = s(l), d(u[i])
-						}
-				};
-		return {
-				please: l
-		}
-}();
-PostToCodepen.please();
+    )
+      (b = d[e]), (c = Math.max(parseFloat(b) || 0, c));
+    return c;
+  }
+  function b(b) {
+    var c = 0,
+      d = 0,
+      g = 0,
+      k = 0,
+      l = window.getComputedStyle(b) || {},
+      m = l[e + h];
+    c = Math.max(a(m), c);
+    var n = l[e + i];
+    d = Math.max(a(n), d);
+    l[f + i];
+    k = Math.max(a(l[f + i]), k);
+    var o = a(l[f + h]);
+    return (
+      o > 0 && (o *= parseInt(l[f + j], 10) || 1), (g = Math.max(o, g)), g || c
+    );
+  }
+  function c(a) {
+    var b = window.getComputedStyle(a);
+    return b.background || b.backgroundColor;
+  }
+  function d(a, e, f, h) {
+    if (!g) return void (h && h(e));
+    var i,
+      j,
+      l,
+      m,
+      n,
+      o = 1;
+    "function" == typeof f && ((h = f), (f = {})),
+      (f = f || {}),
+      (f.duration = f.duration || k.duration),
+      (f.targetShowDuration =
+        f.targetShowDuration || b(e) || k.targetShowDuration),
+      (f.relativeToWindow = f.relativeToWindow || k.relativeToWindow),
+      "none" === window.getComputedStyle(e).display &&
+        e.style.setProperty("display", "block", "important"),
+      (i = c(e)),
+      (j = c(a)),
+      (l = e.getBoundingClientRect()),
+      (m = a.getBoundingClientRect()),
+      (scaleXRatio = m.width / l.width),
+      (scaleYRatio = m.height / l.height),
+      (diffX = m.left - l.left),
+      (diffY = m.top - l.top),
+      e.style.removeProperty("display"),
+      (n = document.createElement("div")),
+      n.style.setProperty("pointer-events", "none", "important"),
+      n.style.setProperty(
+        "position",
+        f.relativeToWindow ? "fixed" : "absolute",
+        "important"
+      ),
+      n.style.setProperty("-webkit-transform-origin", "top left", "important"),
+      n.style.setProperty("transform-origin", "top left", "important"),
+      n.style.setProperty("transition", f.duration + "s ease"),
+      n.style.setProperty("width", l.width + "px", "important"),
+      n.style.setProperty("height", l.height + "px", "important"),
+      n.style.setProperty(
+        "left",
+        l.left + (f.relativeToWindow ? 0 : window.pageXOffset) + "px",
+        "important"
+      ),
+      n.style.setProperty(
+        "top",
+        l.top + (f.relativeToWindow ? 0 : window.pageYOffset) + "px",
+        "important"
+      ),
+      n.style.setProperty("background", j, "important"),
+      n.style.setProperty(
+        "-webkit-transform",
+        "translate(" +
+          diffX +
+          "px, " +
+          diffY +
+          "px) scale(" +
+          scaleXRatio +
+          ", " +
+          scaleYRatio +
+          ")",
+        "important"
+      ),
+      n.style.setProperty(
+        "transform",
+        "translate(" +
+          diffX +
+          "px, " +
+          diffY +
+          "px) scale(" +
+          scaleXRatio +
+          ", " +
+          scaleYRatio +
+          ")",
+        "important"
+      ),
+      document.body.appendChild(n);
+    n.offsetTop;
+    return (
+      n.style.setProperty("background", i, "important"),
+      n.style.removeProperty("-webkit-transform"),
+      n.style.removeProperty("transform"),
+      n.addEventListener("transitionend", function p() {
+        n.removeEventListener("transitionend", p),
+          h && h(e),
+          (n.style.transitionDuration = f.targetShowDuration + o + "s"),
+          (n.style.opacity = 0),
+          setTimeout(function () {
+            n.parentNode.removeChild(n);
+          }, 1e3 * (f.targetShowDuration + o));
+      }),
+      function (b, c) {
+        d(e, a, b, c);
+      }
+    );
+  }
+  var e,
+    f,
+    g = (function () {
+      return (
+        void 0 !== window.ontransitionend ||
+        void 0 !== document.documentElement.style.transition
+      );
+    })(),
+    h = "Duration",
+    i = "Delay",
+    j = "IterationCount";
+  (e =
+    void 0 === window.ontransitionend && void 0 !== window.onwebkittransitionend
+      ? "WebkitTransition"
+      : "transition"),
+    (f =
+      void 0 === window.onanimationend && void 0 !== window.onwebkitanimationend
+        ? "WebkitAnimation"
+        : "animation");
+  var k = {
+    duration: 0.3,
+    targetShowDuration: 0,
+    extraTransitionDuration: 1,
+    relativeToWindow: !1
+  };
+  (d.isSupported = g),
+    "object" == typeof exports
+      ? (module.exports = d)
+      : "function" == typeof define && define.amd
+      ? define(function () {
+          return d;
+        })
+      : (window.cta = d);
+})();
